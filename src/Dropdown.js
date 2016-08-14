@@ -90,6 +90,15 @@ const propTypes = {
   onSelect: React.PropTypes.func,
 
   /**
+   * A callback fired when a Dropdown is clicked. Fires before `onToggle`.
+   *
+   * ```js
+   * (event: Object) => any
+   * ```
+   */
+  onClick: React.PropTypes.func,
+
+  /**
    * If `'menuitem'`, causes the dropdown to behave like a menu item rather than
    * a menu button.
    */
@@ -142,12 +151,16 @@ class Dropdown extends React.Component {
     }
   }
 
-  handleClick() {
+  handleClick(event) {
     if (this.props.disabled) {
       return;
     }
 
-    this.toggleOpen('click');
+    if (this.props.onClick) {
+      this.props.onClick(event)
+    } else {
+      this.toggleOpen('click');
+    }
   }
 
   handleKeyDown(event) {
